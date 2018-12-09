@@ -15,4 +15,12 @@ public interface CalculatorService {
      * @return result of addition two integer numbers.
      */
     int add(int a, int b);
+
+    /**
+     * Use exp4j library to parse string math expression and get double result.
+     *
+     * @param expression math expression to calculate.
+     * @return double result of calculation.
+     */
+    double parseExpression(String expression) throws IllegalArgumentException;
 }
