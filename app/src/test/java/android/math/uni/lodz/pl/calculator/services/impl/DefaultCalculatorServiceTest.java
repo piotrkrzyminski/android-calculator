@@ -38,4 +38,36 @@ public class DefaultCalculatorServiceTest {
 
         assertEquals(RESULT_ADD, result);
     }
+
+    /**
+     * Test expression parse when it is empty.
+     * Parsing empty expression should throw exception.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testParseEmptyExpression() {
+        String expression = "";
+        calculatorService.parseExpression(expression);
+    }
+
+    /**
+     * Test parsing expression that cannot be performed properly.
+     * Parsing wrong expressions shoul throw exception.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testParseWrongExpression() {
+        String expression = "9*/*/2";
+        calculatorService.parseExpression(expression);
+    }
+
+    /**
+     * Test parsing properly created expression.
+     * Should return double result.
+     */
+    @Test
+    public void testParseExceptionSuccess() {
+        String expression = "9+2";
+        double result = calculatorService.parseExpression(expression);
+        assertEquals(11, result, 0.1);
+    }
+
 }
