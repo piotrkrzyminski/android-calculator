@@ -3,6 +3,8 @@ package android.math.uni.lodz.pl.calculator.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.math.uni.lodz.pl.calculator.R;
+import android.math.uni.lodz.pl.calculator.dao.HistoryDao;
+import android.math.uni.lodz.pl.calculator.dao.impl.DefaultHistoryDao;
 import android.math.uni.lodz.pl.calculator.services.CalculatorService;
 import android.math.uni.lodz.pl.calculator.services.impl.DefaultCalculatorService;
 import android.os.Bundle;
@@ -30,7 +32,9 @@ public class MainActivity extends Activity {
 
     private static final Logger LOG = LoggerFactory.getLogger(MainActivity.class);
 
-    private CalculatorService calculatorService = new DefaultCalculatorService();
+    private CalculatorService calculatorService;
+
+    private HistoryDao historyDao;
 
     private static List<String> history = new ArrayList<>();
 
@@ -41,6 +45,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        calculatorService = new DefaultCalculatorService();
+        historyDao = new DefaultHistoryDao(this);
     }
 
     /**
@@ -80,7 +87,8 @@ public class MainActivity extends Activity {
         try {
             result = formatDoubleResult(calculatorService.parseExpression(expression));
             LOG.debug("Expression parsed successfully. Result equals: " + result);
-            history.add(expression + " = " + result);
+            //history.add(expression + " = " + result);
+            historyDao.insert(expression + " = " + result);
         } catch (IllegalArgumentException e) {
             LOG.debug("Expression cannot be parsed due to error: " + e.getMessage());
         }
@@ -102,7 +110,8 @@ public class MainActivity extends Activity {
      * Clears all values from history list.
      */
     public void clearHistory(View view) {
-        history = new ArrayList<>();
+        //history = new ArrayList<>();
+        historyDao.deleteAll();
     }
 
     /**
@@ -110,7 +119,7 @@ public class MainActivity extends Activity {
      */
     public void displayHistory(View view) {
         Intent intent = new Intent(this, OperationHistoryActivity.class);
-        intent.putStringArrayListExtra(OPERATION_HISTORY_LIST, (ArrayList<String>) history);
+        //intent.putStringArrayListExtra(OPERATION_HISTORY_LIST, (ArrayList<String>) history);
         startActivity(intent);
     }
 
