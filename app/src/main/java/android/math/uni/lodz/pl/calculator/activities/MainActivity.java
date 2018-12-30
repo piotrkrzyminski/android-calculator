@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -28,15 +26,12 @@ import java.util.Locale;
  */
 public class MainActivity extends Activity {
 
-    public static final String OPERATION_HISTORY_LIST = "historyList";
-
     private static final Logger LOG = LoggerFactory.getLogger(MainActivity.class);
 
     private CalculatorService calculatorService;
 
     private HistoryDao historyDao;
 
-    private static List<String> history = new ArrayList<>();
 
     /**
      * Load view of activity on create.
@@ -62,7 +57,6 @@ public class MainActivity extends Activity {
         final String value = button.getText().toString();
         final TextView resultView = findViewById(R.id.result_text_view);
 
-        // if previous expression failed then clear error message from screen first.
         if (resultView.getText().equals(getResources().getString(R.string.wrong_expression_message))) {
             resultView.setText("");
         }
@@ -74,7 +68,7 @@ public class MainActivity extends Activity {
     /**
      * Get string math expression from text view and calculate result.
      * If expression cannot be proceed then display error message on screen. Otherwise add
-     * expression to calculation history list and display result.
+     * expression to database.
      *
      * @param view result button ("=").
      */
@@ -87,7 +81,6 @@ public class MainActivity extends Activity {
         try {
             result = formatDoubleResult(calculatorService.parseExpression(expression));
             LOG.debug("Expression parsed successfully. Result equals: " + result);
-            //history.add(expression + " = " + result);
             historyDao.insert(expression + " = " + result);
         } catch (IllegalArgumentException e) {
             LOG.debug("Expression cannot be parsed due to error: " + e.getMessage());
@@ -107,19 +100,17 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Clears all values from history list.
+     * Deteles all history from database.
      */
     public void clearHistory(View view) {
-        //history = new ArrayList<>();
         historyDao.deleteAll();
     }
 
     /**
-     * Send list of history to other activity and display it.
+     * Display operation history activity.
      */
     public void displayHistory(View view) {
         Intent intent = new Intent(this, OperationHistoryActivity.class);
-        //intent.putStringArrayListExtra(OPERATION_HISTORY_LIST, (ArrayList<String>) history);
         startActivity(intent);
     }
 

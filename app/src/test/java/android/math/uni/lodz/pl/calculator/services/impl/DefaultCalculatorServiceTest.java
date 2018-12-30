@@ -51,7 +51,7 @@ public class DefaultCalculatorServiceTest {
 
     /**
      * Test parsing expression that cannot be performed properly.
-     * Parsing wrong expressions shoul throw exception.
+     * Parsing wrong expressions should throw exception.
      */
     @Test (expected = IllegalArgumentException.class)
     public void testParseWrongExpression() {
@@ -69,5 +69,4 @@ public class DefaultCalculatorServiceTest {
         double result = calculatorService.parseExpression(expression);
         assertEquals(11, result, 0.1);
     }
-
 }

@@ -38,13 +38,4 @@ public class CustomSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + HistoryDao.TABLE_NAME);
         this.onCreate(db);
     }
-
-    /**
-     * Inserts new history entry to table.
-     *
-     * @param entry history entry to insert.
-     */
-    public void insertHistory(String entry) {
-
-    }
 }

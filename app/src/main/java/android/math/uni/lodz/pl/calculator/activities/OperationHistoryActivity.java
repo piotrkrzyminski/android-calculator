@@ -7,7 +7,6 @@ import android.math.uni.lodz.pl.calculator.dao.impl.DefaultHistoryDao;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +24,6 @@ public class OperationHistoryActivity extends Activity {
         final HistoryDao historyDao = new DefaultHistoryDao(this);
 
         String result;
-        //final ArrayList<String> historyList = getIntent().getStringArrayListExtra(MainActivity.OPERATION_HISTORY_LIST);
         final List<String> historyList = historyDao.getAllHistory();
         if (historyList == null || historyList.isEmpty()) {
             result = (getResources().getString(R.string.no_history_message));
