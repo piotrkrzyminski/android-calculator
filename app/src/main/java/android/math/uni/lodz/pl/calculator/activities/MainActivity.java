@@ -80,10 +80,10 @@ public class MainActivity extends Activity {
         String result = getResources().getString(R.string.wrong_expression_message);
         try {
             result = formatDoubleResult(calculatorService.parseExpression(expression));
-            LOG.debug("Expression parsed successfully. Result equals: " + result);
+            LOG.debug("Expression parsed successfully. Result equals: {}", result);
             historyDao.insert(expression + " = " + result);
         } catch (IllegalArgumentException e) {
-            LOG.debug("Expression cannot be parsed due to error: " + e.getMessage());
+            LOG.debug("Expression cannot be parsed due to error: {}", e.getMessage());
         }
 
         resultView.setText(result);
